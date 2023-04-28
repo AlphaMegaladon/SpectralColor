@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" type="images/png" href="{{ logo_path }}">
+    <title>SpectralColor</title>
+    <style>
+        div {
+            float: left;
+            padding: 5px;
+        }
+        body {
+            min-width:1100px;
+        }
+        input {
+            border: none;
+            width: 32px;
+            height: 22px;
+        } 
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-dragdata@2.0.2/dist/chartjs-plugin-dragdata.min.js"></script>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="container-fluid" style="width:1100px;height500px;">
+        <canvas id="myChart">
+        </canvas>
+    </div>
+</div>
+<div class="container-fluid" style="width: 624px;height: 400px;">
+    <div class="container-fluid" id="colorFieldD652" style="width: 300px;height:200px;
+    background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});">
+        {% if srgb_65_2[0]+srgb_65_2[1]+srgb_65_2[2] < 382 %}
+        <p id='colorD652' style="color:white">srgb d65/2: 
+            <br /> R: {{ srgb_65_2[0] | int }} 
+            <br /> G: {{ srgb_65_2[1] | int }} 
+            <br /> B: {{ srgb_65_2[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
+            background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});"> 
+        </p> 
+        {% else %}
+        <p id='colorD652' style="color:black">srgb d65/2: 
+            <br /> R: {{ srgb_65_2[0] | int }} 
+            <br /> G: {{ srgb_65_2[1] | int }} 
+            <br /> B: {{ srgb_65_2[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
+            background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});"> 
+        </p> 
+        {% endif %}
+        <p>
+    </div>
+    <div class="container-fluid" id="colorFieldD6510" style="width: 300px;height:200px;
+    background-color: rgb({{ srgb_65_10[0] | safe }},{{ srgb_65_10[1] | safe }},{{ srgb_65_10[2] | safe }});">
+        {% if srgb_65_10[0]+srgb_65_10[1]+srgb_65_10[2] < 382 %}
+        <p id='colorD6510' style="color:white">srgb d65/10: 
+            <br /> R: {{ srgb_65_10[0] | int }} 
+            <br /> G: {{ srgb_65_10[1] | int }} 
+            <br /> B: {{ srgb_65_10[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
+            background-color: rgb({{ srgb_65_10[0] | safe }},{{ srgb_65_10[1] | safe }},{{ srgb_65_10[2] | safe }});"> 
+        </p> 
+        {% else %}
+        <p id='colorD6510' style="color:black">srgb d65/10: 
+            <br /> R: {{ srgb_65_10[0] | int }} 
+            <br /> G: {{ srgb_65_10[1] | int }} 
+            <br /> B: {{ srgb_65_10[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
+            background-color: rgb({{ srgb_65_10[0] | safe }},{{ srgb_65_10[1] | safe }},{{ srgb_65_10[2] | safe }});"> 
+        </p> 
+        {% endif %}
+        <p>
+    </div>
+    <div class="container-fluid" id="colorFieldD502" style="width:300px;height:200px;
+    background-color: rgb({{ srgb_50_2[0] | safe }},{{ srgb_50_2[1] | safe }},{{ srgb_50_2[2] | safe }});">
+        {% if srgb_50_2[0]+srgb_50_2[1]+srgb_50_2[2] < 382 %}
+        <p id='colorD502' style='color: white;'>srgb d50/2: 
+            <br /> R: {{ srgb_50_2[0] | int }} 
+            <br /> G: {{ srgb_50_2[1] | int }} 
+            <br /> B: {{ srgb_50_2[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
+            background-color: rgb({{ srgb_50_2[0] | safe }},{{ srgb_50_2[1] | safe }},{{ srgb_50_2[2] | safe }});"> 
+        </p>
+        {% else %}
+        <p id='colorD502' style="color: black;">srgb d50/2: 
+            <br /> R: {{ srgb_50_2[0] | int }} 
+            <br /> G: {{ srgb_50_2[1] | int }} 
+            <br /> B: {{ srgb_50_2[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
+            background-color: rgb({{ srgb_50_2[0] | safe }},{{ srgb_50_2[1] | safe }},{{ srgb_50_2[2] | safe }});"> 
+        </p>
+        {% endif %}
+    </div>
+    <div class="container-fluid" id="colorFieldD5010" style="width:300px;height:200px;
+    background-color: rgb({{ srgb_50_10[0] | safe }},{{ srgb_50_10[1] | safe }},{{ srgb_50_10[2] | safe }});">
+        {% if srgb_50_10[0]+srgb_50_10[1]+srgb_50_10[2] < 382 %}
+        <p id='colorD5010' style='color: white;'>srgb d50/10: 
+            <br /> R: {{ srgb_50_10[0] | int }} 
+            <br /> G: {{ srgb_50_10[1] | int }} 
+            <br /> B: {{ srgb_50_10[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
+            background-color: rgb({{ srgb_50_10[0] | safe }},{{ srgb_50_10[1] | safe }},{{ srgb_50_10[2] | safe }});"> 
+        </p>
+        {% else %}
+        <p id='colorD5010' style="color: black;">srgb d50/10: 
+            <br /> R: {{ srgb_50_10[0] | int }} 
+            <br /> G: {{ srgb_50_10[1] | int }} 
+            <br /> B: {{ srgb_50_10[2] | int }}
+            <br /> <br /> Choose Color:
+            <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
+            background-color: rgb({{ srgb_50_10[0] | safe }},{{ srgb_50_10[1] | safe }},{{ srgb_50_10[2] | safe }});"> 
+        </p>
+        {% endif %}
+    </div>
+</div>
+
+<div style="position:absolute;right:0px;bottom:0px">
+    <form method="POST">
+        <img src="{{ logo_path }}" alt="" width="100px">
+    </form>
+</div>
+
+<script>
+    function rgbFunction(ill, obs) {
+        if (ill === 'd65') {
+            if (obs === '2') {
+                var rgbInput = document.getElementById('rgb652Field').value;
+            } else if (obs === '10') {
+                var rgbInput = document.getElementById('rgb6510Field').value;
+            }
+            
+        } else if (ill === 'd50') {
+            if (obs === '2') {
+                var rgbInput = document.getElementById('rgb502Field').value;
+            } else if (obs === '10') {
+                var rgbInput = document.getElementById('rgb5010Field').value;
+            }
+        }
+        fetch('/rgbTransfromation', {
+        headers: {
+        'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify({
+            "data": rgbInput,
+            "ill": ill,
+            "obs": obs
+        })
+        }).then(function (response) { // At this point, Flask has printed our JSON
+            return response.json();
+        }).then(function (data) {
+            // block for chart updata spectrum
+            myChart.data.datasets[0].data = data.spectrum;
+            myChart.update();
+            // block for color updata in divs
+            document.getElementById('colorFieldD502').style.background = "rgb(" + data.srgb_50_2 + ")";
+            document.getElementById('colorFieldD5010').style.background = "rgb(" + data.srgb_50_10 + ")";
+            document.getElementById('colorFieldD652').style.background = "rgb(" + data.srgb_65_2 + ")";
+            document.getElementById('colorFieldD6510').style.background = "rgb(" + data.srgb_65_10 + ")";
+            // block for writing in divs
+            colorBoxes(data);
+        })
+    }
+</script>
+
+<script>
+    var ctx = document.getElementById("myChart").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: {{ labels | safe }},
+            datasets: [
+                {
+                    label: "Wavelength",
+                    data: {{ values | safe }},
+                    backgroundColor: "rgb(50,50,50,0.5)",
+                    borderColor: "rgb(200,0,0)",
+                    // borderWidth: 2,
+                    tension: 0.5,
+                    fill: true,
+                    pointHitRadius: 25
+                },
+                {
+                    label: "Maximal Reflectance",
+                    data: Array(50).fill(1),
+                    background: "rgb(100,100,100,1)",
+                    borderColor: "rgb(100,100,100,1)",
+                    dragData: false,
+                    borderWidth: 1,
+                    pointRadius: 0.1,
+                    clip: 0,
+                    pointHoverRadius: 0
+                },
+                {
+                    label: "Minimal Reflectance",
+                    data: Array(50).fill(0),
+                    background: "rgb(0,0,0)",
+                    borderColor: "rgb(0,0,0)",
+                    dragData: false,
+                    borderWidth: 1,
+                    clip: 0,
+                    pointRadius: 0.1,
+                    pointHoverRadius: 0
+                }
+            ]
+        },
+        options: {
+            scales: {
+                y: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Relative Reflectance'
+                    }
+                },
+                x: {
+                    display: true,
+                    title: {
+                        display: true,
+                        text: 'Wavelenght in nm'
+                    }
+                },
+            },
+            resonsive: true,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                title: {
+                    display: true,
+                    text: "Reflectance Spectrum"
+                },
+                dragData: {
+                    round: 2, // rounds the values to n decimal places 
+                            // in this case 1, e.g 0.1234 => 0.1)
+                    showTooltip: true, // show the tooltip while dragging [default = true]
+                    // dragX: true // also enable dragging along the x-axis.
+                                // this solely works for continous, numerical x-axis scales (no categories or dates)!
+                    onDragStart: function(e, element) {
+                        //startingValue = myChart.data.datasets[element._datasetIndex].data[element._index]
+                    /*
+                    // e = event, element = datapoint that was dragged
+                    // you may use this callback to prohibit dragging certain datapoints
+                    // by returning false in this callback
+                    if (element.datasetIndex === 0 && element.index === 0) {
+                        // this would prohibit dragging the first datapoint in the first
+                        // dataset entirely
+                        return false
+                    }
+                    */
+                    },
+                    onDrag: function(e, datasetIndex, index, value) {
+                        let startValueLeft2 = myChart.data.datasets[datasetIndex].data[index-2];
+                        let startValueLeft = myChart.data.datasets[datasetIndex].data[index-1];
+                        let startValue = myChart.data.datasets[datasetIndex].data[index];
+                        let startValueRight = myChart.data.datasets[datasetIndex].data[index+1];
+                        let startValueRight2 = myChart.data.datasets[datasetIndex].data[index+2];
+                        let delta = (value - startValue);
+                    
+                        if (index === 0) {
+                            if (delta*(startValueRight-value) < 0) {
+                                myChart.data.datasets[datasetIndex].data[index + 1] = startValueRight + delta*(3/4);
+                                if (delta*(startValueRight2-startValueRight) < 0) {
+                                    myChart.data.datasets[datasetIndex].data[index + 2] = startValueRight2 + delta*(3/8);
+                                }
+                            }
+                        } else if (index === (myChart.data.datasets[datasetIndex].data.length - 1)) {
+                            if (delta*(startValueLeft-value) < 0) {
+                                myChart.data.datasets[datasetIndex].data[index - 1] = startValueLeft + delta*(3/4);
+                                if (delta*(startValueLeft2-startValueLeft) < 0) {
+                                    myChart.data.datasets[datasetIndex].data[index - 2] = startValueLeft2 + delta*(3/8);
+                                }
+                            }
+                        } else {
+                            if (delta*(startValueLeft-value) < 0) {
+                                myChart.data.datasets[datasetIndex].data[index - 1] = startValueLeft + delta*(3/4);
+                                if (delta*(startValueLeft2-startValueLeft) < 0) {
+                                    myChart.data.datasets[datasetIndex].data[index - 2] = startValueLeft2 + delta*(3/8);
+                                }
+                            }
+                            if (delta*(startValueRight-value) < 0) {
+                                myChart.data.datasets[datasetIndex].data[index + 1] = startValueRight + delta*(3/4);
+                                if (delta*(startValueRight2-startValueRight) < 0) {
+                                    myChart.data.datasets[datasetIndex].data[index + 2] = startValueRight2 + delta*(3/8);
+                                }
+                            }
+                        }
+                        for (let iter = -2; iter <= 2; iter++){
+                            if (myChart.data.datasets[datasetIndex].data[index+iter]>1) {
+                                myChart.data.datasets[datasetIndex].data[index+iter]=1
+                            };
+                            if (myChart.data.datasets[datasetIndex].data[index+iter]<0) {
+                                myChart.data.datasets[datasetIndex].data[index+iter]=0
+                            }; 
+                        };
+                    
+                        myChart.update()     
+                    },
+                    onDragEnd: function(e, datasetIndex, index, value) {
+            
+                        // POST
+                        fetch('/spectralTransformation', {
+
+                        // Declare what type of data we're sending
+                        headers: {
+                        'Content-Type': 'application/json'
+                        },
+
+                        // Specify the method
+                        method: 'POST',
+
+                        // A JSON payload
+                        body: JSON.stringify({
+                            "data": myChart.data.datasets[datasetIndex].data
+                        })
+                        }).then(function (response) { // At this point, Flask has printed our JSON
+                        return response.json();
+                        }).then(function (srgb) {
+
+                        document.getElementById('colorFieldD652').style.background = "rgb(" + srgb.srgb_65_2 + ")";
+                        document.getElementById('colorFieldD6510').style.background = "rgb(" + srgb.srgb_65_10 + ")";
+                        document.getElementById('colorFieldD502').style.background = "rgb(" + srgb.srgb_50_2 + ")";
+                        document.getElementById('colorFieldD5010').style.background = "rgb(" + srgb.srgb_50_10 + ")";
+                        colorBoxes(srgb);
+                        });
+                    },
+                }
+            },   
+        }
+    });
+</script>
+
+<script>
+    function colorBoxes (data) {
+        if ((data.srgb_50_2[0] + data.srgb_50_2[1] + data.srgb_50_2[2]) < 382) {
+            document.getElementById('colorFieldD502').innerHTML = 
+            "<p id='colorD502' style='color:white'>srgb d50/2:" + 
+                "<br /> R:" + data.srgb_50_2[0] + 
+                "<br /> G:" + data.srgb_50_2[1] +
+                "<br /> B:" + data.srgb_50_2[2] + 
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
+                    background-color:rgb(`+ data.srgb_50_2[0] + `,` + data.srgb_50_2[1] +`,` + data.srgb_50_2[2] +`);"> ` +
+            "</p>";
+        } else {
+            document.getElementById('colorFieldD502').innerHTML = 
+            "<p id='colorD502' style='color:black'>srgb d50/2:" + 
+                "<br /> R:" + data.srgb_50_2[0] + 
+                "<br /> G:" + data.srgb_50_2[1] +
+                "<br /> B:" + data.srgb_50_2[2] +
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
+                    background-color:rgb(`+ data.srgb_50_2[0] + `,` + data.srgb_50_2[1] +`,` + data.srgb_50_2[2] +`);"> ` +
+            "</p>";
+        }
+        if ((data.srgb_50_10[0] + data.srgb_50_10[1] + data.srgb_50_10[2]) < 382) {
+            document.getElementById('colorFieldD5010').innerHTML = 
+            "<p id='colorD5010' style='color:white'>srgb d50/10:" + 
+                "<br /> R:" + data.srgb_50_10[0] + 
+                "<br /> G:" + data.srgb_50_10[1] +
+                "<br /> B:" + data.srgb_50_10[2] + 
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
+                    background-color:rgb(`+ data.srgb_50_10[0] + `,` + data.srgb_50_10[1] +`,` + data.srgb_50_10[2] +`);"> ` +
+            "</p>";
+        } else {
+            document.getElementById('colorFieldD5010').innerHTML = 
+            "<p id='colorD5010' style='color:black'>srgb d50/10:" + 
+                "<br /> R:" + data.srgb_50_10[0] + 
+                "<br /> G:" + data.srgb_50_10[1] +
+                "<br /> B:" + data.srgb_50_10[2] +
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
+                    background-color:rgb(`+ data.srgb_50_10[0] + `,` + data.srgb_50_10[1] +`,` + data.srgb_50_10[2] +`);"> ` +
+            "</p>";
+        }
+        if ((data.srgb_65_2[0] + data.srgb_65_2[1] + data.srgb_65_2[2]) < 382) {
+            document.getElementById('colorFieldD652').innerHTML = 
+            "<p id='colorD652' style='color:white'>srgb d65/2:" + 
+                "<br /> R:" + data.srgb_65_2[0] + 
+                "<br /> G:" + data.srgb_65_2[1] +
+                "<br /> B:" + data.srgb_65_2[2] +
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
+                    background-color:rgb(`+ data.srgb_65_2[0] + `,` + data.srgb_65_2[1] +`,` + data.srgb_65_2[2] +`);"> ` +
+            "</p>";
+        } else {
+            document.getElementById('colorFieldD652').innerHTML = 
+            "<p id='colorD652' style='color:black'>srgb d65/2:" + 
+                "<br /> R:" + data.srgb_65_2[0] + 
+                "<br /> G:" + data.srgb_65_2[1] +
+                "<br /> B:" + data.srgb_65_2[2] +
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
+                    background-color:rgb(`+ data.srgb_65_2[0] + `,` + data.srgb_65_2[1] +`,` + data.srgb_65_2[2] +`);"> ` +
+            "</p>";
+        }
+        if ((data.srgb_65_10[0] + data.srgb_65_10[1] + data.srgb_65_10[2]) < 382) {
+            document.getElementById('colorFieldD6510').innerHTML = 
+            "<p id='colorD6510' style='color:white'>srgb d65/10:" + 
+                "<br /> R:" + data.srgb_65_10[0] + 
+                "<br /> G:" + data.srgb_65_10[1] +
+                "<br /> B:" + data.srgb_65_10[2] +
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
+                    background-color:rgb(`+ data.srgb_65_10[0] + `,` + data.srgb_65_10[1] +`,` + data.srgb_65_10[2] +`);"> ` +
+            "</p>";
+        } else {
+            document.getElementById('colorFieldD6510').innerHTML = 
+            "<p id='colorD6510' style='color:black'>srgb d65/10:" + 
+                "<br /> R:" + data.srgb_65_10[0] + 
+                "<br /> G:" + data.srgb_65_10[1] +
+                "<br /> B:" + data.srgb_65_10[2] +
+                `<br /> <br /> Choose Color:
+                <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
+                    background-color:rgb(`+ data.srgb_65_10[0] + `,` + data.srgb_65_10[1] +`,` + data.srgb_65_10[2] +`);"> ` +
+            "</p>";
+        }
+    }        
+</script>
+
+</body>
+</html>
+
