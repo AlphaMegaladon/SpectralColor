@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="icon" type="images/png" href="{{ logo_path }}">
+    <link rel="icon" type="images/png" href="{{ favicon_path }}">
     <title>SpectralColor</title>
     <style>
         div {
             float: left;
-            padding: 5px;
         }
         body {
-            min-width:1100px;
+            min-width:1230px;
         }
         input {
             border: none;
@@ -23,109 +22,314 @@
 </head>
 
 <body>
+
+<div class="container">
+    <h1 style='text-align: center; text-decoration: underline; text-decoration-thickness: 10%;'>From Reflectance Spectrum to Color</h1>
+</div>
+
 <div class="container-fluid">
-    <div class="container-fluid" style="width:1100px;height500px;">
-        <canvas id="myChart">
+    <div class="table-responsive" style="width:1230px;height500px;">
+        <canvas id="myChart" style="background-image: url({{ background_image_path }});
+                                    background-position: -150% 43%;
+                                    background-size: 99.7% 102.4%;
+                                    opacity: 1;"
+                class="table">
         </canvas>
     </div>
 </div>
-<div class="container-fluid" style="width: 624px;height: 400px;">
-    <div class="container-fluid" id="colorFieldD652" style="width: 300px;height:200px;
+
+
+<div class="container-fluid">
+    
+    <div style="width:67px;height:200px;padding: 0px;background-color: rgb(255,255,255);"></div>
+ 
+    <div class="container-fluid" id="colorFieldD652" style="width: 284px;height:200px;
     background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});">
         {% if srgb_65_2[0]+srgb_65_2[1]+srgb_65_2[2] < 382 %}
-        <p id='colorD652' style="color:white">srgb d65/2: 
+        <p id='colorD652' style="color:white">srgb D65/2°: 
             <br /> R: {{ srgb_65_2[0] | int }} 
             <br /> G: {{ srgb_65_2[1] | int }} 
             <br /> B: {{ srgb_65_2[2] | int }}
             <br /> <br /> Choose Color:
-            <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
-            background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});"> 
+            <input type="color" name='rgb652Input' value="#f0f0f0" 
+            id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" 
+            style="background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});"> 
         </p> 
         {% else %}
-        <p id='colorD652' style="color:black">srgb d65/2: 
+        <p id='colorD652' style="color:black">srgb D65/2°: 
             <br /> R: {{ srgb_65_2[0] | int }} 
             <br /> G: {{ srgb_65_2[1] | int }} 
             <br /> B: {{ srgb_65_2[2] | int }}
             <br /> <br /> Choose Color:
-            <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
-            background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});"> 
+            <input type="color" name='rgb652Input' value="#f0f0f0" 
+            id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" 
+            style="background-color: rgb({{ srgb_65_2[0] | safe }},{{ srgb_65_2[1] | safe }},{{ srgb_65_2[2] | safe }});"> 
         </p> 
         {% endif %}
         <p>
     </div>
-    <div class="container-fluid" id="colorFieldD6510" style="width: 300px;height:200px;
+    
+    {% if srgb_65_2[0]+srgb_65_2[1]+srgb_65_2[2] < 382 %}
+        <div style="width:1px;height:200px;padding: 0px;background-color: rgb(255,255,255);"></div>
+    {% else %}
+        <div style="width:1px;height:200px;padding: 0px;background-color: rgb(0,0,0);"></div>
+    {% endif %}
+
+    <div class="container-fluid" id="colorFieldD6510" style="width: 284px;height:200px;
     background-color: rgb({{ srgb_65_10[0] | safe }},{{ srgb_65_10[1] | safe }},{{ srgb_65_10[2] | safe }});">
         {% if srgb_65_10[0]+srgb_65_10[1]+srgb_65_10[2] < 382 %}
-        <p id='colorD6510' style="color:white">srgb d65/10: 
+        <p id='colorD6510' style="color:white">D65/10°
+            <!--
             <br /> R: {{ srgb_65_10[0] | int }} 
             <br /> G: {{ srgb_65_10[1] | int }} 
             <br /> B: {{ srgb_65_10[2] | int }}
             <br /> <br /> Choose Color:
             <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
             background-color: rgb({{ srgb_65_10[0] | safe }},{{ srgb_65_10[1] | safe }},{{ srgb_65_10[2] | safe }});"> 
+            --> 
         </p> 
         {% else %}
-        <p id='colorD6510' style="color:black">srgb d65/10: 
+        <p id='colorD6510' style="color:black">D65/10°
+            <!--
             <br /> R: {{ srgb_65_10[0] | int }} 
             <br /> G: {{ srgb_65_10[1] | int }} 
             <br /> B: {{ srgb_65_10[2] | int }}
             <br /> <br /> Choose Color:
             <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
             background-color: rgb({{ srgb_65_10[0] | safe }},{{ srgb_65_10[1] | safe }},{{ srgb_65_10[2] | safe }});"> 
+            -->
         </p> 
         {% endif %}
         <p>
     </div>
-    <div class="container-fluid" id="colorFieldD502" style="width:300px;height:200px;
+
+    {% if srgb_65_2[0]+srgb_65_2[1]+srgb_65_2[2] < 382 %}
+        <div style="width:1px;height:200px;padding: 0px;background-color: rgb(255,255,255);"></div>
+    {% else %}
+        <div style="width:1px;height:200px;padding: 0px;background-color: rgb(0,0,0);"></div>
+    {% endif %}
+
+    <div class="container-fluid" id="colorFieldD502" style="width:284px;height:200px;
     background-color: rgb({{ srgb_50_2[0] | safe }},{{ srgb_50_2[1] | safe }},{{ srgb_50_2[2] | safe }});">
         {% if srgb_50_2[0]+srgb_50_2[1]+srgb_50_2[2] < 382 %}
-        <p id='colorD502' style='color: white;'>srgb d50/2: 
+        <p id='colorD502' style='color: white;'>D50/2°
+            <!--
             <br /> R: {{ srgb_50_2[0] | int }} 
             <br /> G: {{ srgb_50_2[1] | int }} 
             <br /> B: {{ srgb_50_2[2] | int }}
             <br /> <br /> Choose Color:
             <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
             background-color: rgb({{ srgb_50_2[0] | safe }},{{ srgb_50_2[1] | safe }},{{ srgb_50_2[2] | safe }});"> 
+            -->
         </p>
         {% else %}
-        <p id='colorD502' style="color: black;">srgb d50/2: 
+        <p id='colorD502' style="color: black;">D50/2°
+            <!--
             <br /> R: {{ srgb_50_2[0] | int }} 
             <br /> G: {{ srgb_50_2[1] | int }} 
             <br /> B: {{ srgb_50_2[2] | int }}
             <br /> <br /> Choose Color:
             <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
             background-color: rgb({{ srgb_50_2[0] | safe }},{{ srgb_50_2[1] | safe }},{{ srgb_50_2[2] | safe }});"> 
+            -->
         </p>
         {% endif %}
     </div>
-    <div class="container-fluid" id="colorFieldD5010" style="width:300px;height:200px;
+
+    {% if srgb_65_2[0]+srgb_65_2[1]+srgb_65_2[2] < 382 %}
+        <div style="width:1px;height:200px;padding: 0px;background-color: rgb(255,255,255);"></div>
+    {% else %}
+        <div style="width:1px;height:200px;padding: 0px;background-color: rgb(0,0,0);"></div>
+    {% endif %}
+
+    <div class="container-fluid" id="colorFieldD5010" style="width:284px;height:200px;
     background-color: rgb({{ srgb_50_10[0] | safe }},{{ srgb_50_10[1] | safe }},{{ srgb_50_10[2] | safe }});">
         {% if srgb_50_10[0]+srgb_50_10[1]+srgb_50_10[2] < 382 %}
-        <p id='colorD5010' style='color: white;'>srgb d50/10: 
+        <p id='colorD5010' style='color: white;'>D50/10°
+            <!--
             <br /> R: {{ srgb_50_10[0] | int }} 
             <br /> G: {{ srgb_50_10[1] | int }} 
             <br /> B: {{ srgb_50_10[2] | int }}
             <br /> <br /> Choose Color:
             <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
             background-color: rgb({{ srgb_50_10[0] | safe }},{{ srgb_50_10[1] | safe }},{{ srgb_50_10[2] | safe }});"> 
+            -->
         </p>
         {% else %}
-        <p id='colorD5010' style="color: black;">srgb d50/10: 
+        <p id='colorD5010' style="color: black;">D50/10°
+            <!--
             <br /> R: {{ srgb_50_10[0] | int }} 
             <br /> G: {{ srgb_50_10[1] | int }} 
             <br /> B: {{ srgb_50_10[2] | int }}
             <br /> <br /> Choose Color:
             <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
             background-color: rgb({{ srgb_50_10[0] | safe }},{{ srgb_50_10[1] | safe }},{{ srgb_50_10[2] | safe }});"> 
+            -->
         </p>
         {% endif %}
     </div>
 </div>
 
-<div style="position:absolute;right:0px;bottom:0px">
+
+<div style="position:fixed;right:0px;bottom:0px">
     <form method="POST">
         <img src="{{ logo_path }}" alt="" width="100px">
     </form>
+</div>
+
+<div class="container" style="position:relative; left: 7%; max-width: 1000px;">
+    <br />
+    <h1 style="text-align: center; text-decoration: underline; text-decoration-thickness: 10%;">
+        How It Works
+    </h1>
+    <figure style="text-align: center">
+        <img src="static/images/light_source_to_observer.jpg" width="40%" alt="Light Source to Observer">
+        <figcaption>
+            <b>Fig 1:</b> 
+            <i>This figure illustrates how an observer receives visual information and what is needed to describe the human vision of color. <br />
+                Taken from <a href="https://vteke.com/cie-standard-observers-cie-x-y-z-color-values/">vteke.com</a>
+            </i>
+        </figcaption>
+    </figure>
+    <p style="text-align:justify">
+        There exists a quite easy empirical model to describe humans' vision of color.
+        Basically, all is built upon the question: What is needed for the human perception of color?
+        This question may be answered by three things that essential for color vision:
+    </p>
+    <ul>
+        <li>Light source</li>
+        <li>Object of view</li>
+        <li>Observer</li>
+    </ul>
+    <p style="text-align: justify;">
+        Clearly, some sort of light source is needed, because without light human eyes are not able to receive any information.
+        An object is needed because this is the actual thing of interest. Note that light source and object of view may be one 
+        thing. This is for example the case for our pc-monitor (you are viewing at the moment).
+        The third thing which is needed to describe the human vision of color is the human or generally any observer itself since without
+        an observer no one may receive visual information.
+        The above description is illustrated in and summarized in Fig. 1.
+    </p>
+    <figure style="text-align: center">
+        <img src="static/images/light_sources.jpg" width="40%" alt="Different Light Sources">
+        <figcaption>
+            <b>Fig 2:</b> 
+            <i>
+                Illumination can have a strong effect on human color vision. This figure shows quite different illuminations. <br />
+                Taken from <a href="https://www.youtube.com/watch?v=3FG-FnAPES0">Kelvin Color Temperature Scale Explained</a>
+            </i>
+        </figcaption>
+    </figure>    
+    <p style="text-align:justify">
+        After answering the question of what is needed for human color vision, the next interesting (and quite similar) question is:
+        Which parameters affect humans' vision of light. Basically, these are the same three points that are needed to describe the human 
+        perception of light (or at least arise from them). In the following, we will have a closer look at that.
+        <br />
+        The first possibility to change humans' color vision is the light source. 
+        If this one changes, clearly also the color may change. This is clear if one thinks of how different things look if the sun 
+        goes down, compared to how things appear under normal daylight. 
+        This is why there are so-called standard illuminations defined. In our simulation above 
+        2 different illuminations are simulated, namely D65 and D50. D65 norm light approximates daylight at a color temperature of 6500 Kelvin. 
+        D50 norm light approximates daylight at a color temperature of 5000 Kelvin. Therefore D50 appears slightly darker and has a slight shift
+        to yellow, compared to D65. This effect can be illustrated with the simulation above, by just choosing the color ("Choose Color"-Field) 
+        srgb=(255, 255, 255), which simulates perfect white.
+    </p>
+    <figure style="text-align: center;">
+        <img src="static/images/different_observers.png" width="40%" alt="Observer Image">
+        <figcaption>
+            <b>Fig 3:</b> 
+            <i>
+                The CIE 1931 2° standard observer is shown on the left and the CIE 1964 10° standard observer is shown on the right. <br />
+                Taken from <a href="https://measurewhatyousee.com/2014/10/10/understanding-cie-illuminants-and-observers/">measurewhatyousee.com</a>
+            </i>
+        </figcaption>
+    </figure>
+    <p style="text-align: justify;">
+        The second thing which may affect the human vision of light is the observer itself. It is known that not all persons see colors the 
+        same way. For example, approximately 10% of males (&#60;1% of females) have some kind of color blindness. Also, persons 
+        without color blindness still do not have exactly the same vision of color, but these effects are quite small and typically ignored. Besides this 
+        dependency of the individual observer, there is a change of color vision that results from the relative size of objects under view. 
+        More precisely the exact vision of color depends on the opening angle under which the light is received by the retina (see 
+        Fig. 3 for illustration). In practice, there are 2 mainly used standard observers. The first is the CIE 1931 2° standard observer, which assumes (as the 
+        name suggests) an opening angle of 2° under which objects are seen. The second one is the CIE 1964 10° standard observer, which suggests 
+        an opening angle of 10° and hence is more suited for bigger and/or more nearby objects than the 2° one. Both standard observers are simulated 
+        above.
+    </p>
+    <figure style="text-align: center;">
+        <img src="static/images/RefSpec2Color.png" width="100%" alt="Relative Reflectance to Color">
+        <figcaption>
+            <b>Fig 4:</b> 
+            <i>Shows how a color can be calculated from the relative reflectance with given illumination and observer.</i>
+        </figcaption>
+    </figure>
+    <p style="text-align: justify;">
+        Besides illumination and observer, the most important parameter to describe humans' vision of color is the relative reflectance (main 
+        graph in simulation). 
+        The relative reflectance gives us basically the ground truth color of an object independent under which conditions it is observed.
+        The relative reflectance lies between 0 and 1 and describes how much light of a given wavelength is reflected from an object. 
+        For example, if we have a relative reflectance of 1 at a specific wavelength all light at this wavelength is reflected. Perfect white 
+        would have a relative reflectance of 1 at all (visible) wavelength. Contrary, if the relative reflectance is 0 for a given wavelength, 
+        this means that all light of this wavelength is absorbed (or transmitted) and nothing is reflected. So for a perfect black the 
+        relative reflectance would be 0 for all wavelengths (neglecting black body radiation). 
+        Note that in the scenario described above effects of optical brightener which 
+        may shift light of a given wavelength to light of a longer wavelength are ignored.
+    </p>
+    <figure style="text-align: center;">
+        <img src="static/images/NormlightCabines.png" width="100%" alt="Normlight Booth">
+        <figcaption>
+            <b>Fig 5:</b> 
+            <i>This figure illustrates how one color sample may appear in a different color under different illumination and/or observer conditions.</i>
+        </figcaption>
+    </figure>
+    <p style="text-align: justify;">
+        Now we have all together to describe humans' vision of color. First of all the relative reflectance of our object of 
+        interest needs to be known. With this knowledge, one can compute how an object appears under a given illumination and observer.
+        In the simulation above 4 different standard viewing conditions are displayed:
+    </p>
+        <ul>
+            <li>Norm light D65 under 2° observation (which is standard for srgb)</li>
+            <li>Norm light D65 under 10° observation (standard in textile printing)</li>
+            <li>Norm light D50 under 2° observation (standard in graphics arts industry)</li>
+            <li>Norm light D50 under 10° observation</li>
+        </ul>
+    <p style="text-align: justify">
+        The application above therefore simulates a classical psychophysical experiment in which one has 4 different normlight booths with specified 
+        illumination and observation conditions. Also, 4 times completely identical color samples are available. Now one may
+        put each of these samples in a different norm light booth (1 sample per booth). Each under different viewing conditions.
+        The funny fact of this experiment is, that the difference in how the colors appear depends on the color (defined via the relative reflectance) itself. 
+        So for example, pure red with srbg=(255,0,0) 
+        appears quite similar under different viewing conditions, but if the red content is lowered and for example, some blue is added 
+        (e.g. srgb=(150,0,150)) color appears quite different under distinct viewing conditions. Give it a try and test some different 
+        configurations in the simulation above. You may be surprised by the results.
+    </p>
+    <figure style="text-align: center;">
+        <img src="static/images/RefSpec2ColorAndBack.png" width="100%" alt="Relative Reflectance to Color and Back">
+        <figcaption>
+            <b>Fig 6:</b> 
+            <i>This figure illustrates the possibility to not only calculate the resulting color from the reflectance spectrum,
+            but also calculate a possible reflectance spectrum for a given color via optimization of the inverse transformation.</i>
+        </figcaption>
+    </figure>
+    <p style="text-align: justify;">
+        Now we know, how to receive color from a given relative reflectance under specified viewing conditions. An interesting question now is,
+        if it is possible to predict the relative reflectance from a given color (under specific viewing conditions). Unfortunately, it is not possible 
+        to predict a unique reflectance spectrum. This is because (slightly) different reflectance spectra may produce the same appearance 
+        of color under specified
+        viewing conditions. This effect is known under the name of metamerism. Hence the problem is mathematically ill-defined since no unique solution exists.
+        However one can still predict a possible solution to the problem. In the simulation above this is possible with the "Choose Color"-field, where one 
+        can choose a color (in srgb color space) and receive a possible reflectance spectrum in the graph. The color under other viewing conditions is 
+        adjusted according to the determined relative reflectance as well. The possible relative reflectance is computed via optimization of the inverse 
+        transformation (relative reflectance to color) via the "L-BFGS-B"-Algorithm. The choice of the optimization algorithm is quite arbitrary and other 
+        algorithms are possible and may end up with a different possible reflectance spectrum (metamerism).
+        <br />
+        <br />
+        Of course, the description above just gives a brief (and also a simplified) overview of color appearance. There are a lot of 
+        open questions left. 
+        E.g. why does (the displayed) color not change if the relative reflectance of very high (or also very low) wavelengths is changed, although colors 
+        in this wavelength regime are visible. A further interesting question is, how are colors displayed on the screen (basically in srgb), and is it possible
+        to display all colors in this way? Also, further interesting questions may appear and arise. If you think you have encountered a 
+        particularly interesting question or just want to note something (improvements, typos, ...) do not hesitate to contact me at 
+        <a href="mailto:wimmer@fogra.org">wimmer@fogra.org</a>.
+    </p>
 </div>
 
 <script>
@@ -136,7 +340,6 @@
             } else if (obs === '10') {
                 var rgbInput = document.getElementById('rgb6510Field').value;
             }
-            
         } else if (ill === 'd50') {
             if (obs === '2') {
                 var rgbInput = document.getElementById('rgb502Field').value;
@@ -181,7 +384,7 @@
                 {
                     label: "Wavelength",
                     data: {{ values | safe }},
-                    backgroundColor: "rgb(50,50,50,0.5)",
+                    backgroundColor: "rgb(50,50,50,0.3)",
                     borderColor: "rgb(200,0,0)",
                     // borderWidth: 2,
                     tension: 0.5,
@@ -218,25 +421,36 @@
                     display: true,
                     title: {
                         display: true,
-                        text: 'Relative Reflectance'
+                        text: 'Relative Reflectance',
+                        font: {
+                            size: 20
+                        }
                     }
                 },
                 x: {
                     display: true,
                     title: {
                         display: true,
-                        text: 'Wavelenght in nm'
+                        text: 'Wavelength in nm',
+                        font: {
+                            size: 20
+                        }
                     }
                 },
             },
-            resonsive: true,
+            responsive: false,
+            maintainAspectRatio: false,
+            //resonsive: true,
             plugins: {
                 legend: {
                     display: false
                 },
                 title: {
                     display: true,
-                    text: "Reflectance Spectrum"
+                    text: "Reflectance Spectrum",
+                    font: {
+                        size: 25
+                    }
                 },
                 dragData: {
                     round: 2, // rounds the values to n decimal places 
@@ -258,18 +472,33 @@
                     */
                     },
                     onDrag: function(e, datasetIndex, index, value) {
+                        let startValueLeft5 = myChart.data.datasets[datasetIndex].data[index-5];
+                        let startValueLeft4 = myChart.data.datasets[datasetIndex].data[index-4];
+                        let startValueLeft3 = myChart.data.datasets[datasetIndex].data[index-3];
                         let startValueLeft2 = myChart.data.datasets[datasetIndex].data[index-2];
                         let startValueLeft = myChart.data.datasets[datasetIndex].data[index-1];
                         let startValue = myChart.data.datasets[datasetIndex].data[index];
                         let startValueRight = myChart.data.datasets[datasetIndex].data[index+1];
                         let startValueRight2 = myChart.data.datasets[datasetIndex].data[index+2];
+                        let startValueRight3 = myChart.data.datasets[datasetIndex].data[index+3];
+                        let startValueRight4 = myChart.data.datasets[datasetIndex].data[index+4];
+                        let startValueRight5 = myChart.data.datasets[datasetIndex].data[index+5];
                         let delta = (value - startValue);
                     
-                        if (index === 0) {
+                        /*if (index === 0) {
                             if (delta*(startValueRight-value) < 0) {
-                                myChart.data.datasets[datasetIndex].data[index + 1] = startValueRight + delta*(3/4);
+                                myChart.data.datasets[datasetIndex].data[index + 1] = startValueRight + delta*(0.9);
                                 if (delta*(startValueRight2-startValueRight) < 0) {
-                                    myChart.data.datasets[datasetIndex].data[index + 2] = startValueRight2 + delta*(3/8);
+                                    myChart.data.datasets[datasetIndex].data[index + 2] = startValueRight2 + delta*(0.7);
+                                    if (delta*(startValueRight3-startValueRight2) < 0) {
+                                        myChart.data.datasets[datasetIndex].data[index + 3] = startValueRight3 + delta*(0.3);
+                                        if (delta*(startValueRight4-startValueRight3) < 0) {
+                                            myChart.data.datasets[datasetIndex].data[index + 4] = startValueRight4 + delta*(0.1);
+                                            if (delta*(startValueRight5-startValueRight4) < 0) {
+                                                myChart.data.datasets[datasetIndex].data[index + 5] = startValueRight5 + delta*(0.05);
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         } else if (index === (myChart.data.datasets[datasetIndex].data.length - 1)) {
@@ -279,19 +508,37 @@
                                     myChart.data.datasets[datasetIndex].data[index - 2] = startValueLeft2 + delta*(3/8);
                                 }
                             }
-                        } else {
-                            if (delta*(startValueLeft-value) < 0) {
-                                myChart.data.datasets[datasetIndex].data[index - 1] = startValueLeft + delta*(3/4);
-                                if (delta*(startValueLeft2-startValueLeft) < 0) {
-                                    myChart.data.datasets[datasetIndex].data[index - 2] = startValueLeft2 + delta*(3/8);
+                        } else {*/
+                        if (delta*(startValueLeft-value) < 0) {
+                            myChart.data.datasets[datasetIndex].data[index - 1] = startValueLeft + delta*(0.95);
+                            if (delta*(startValueLeft2-startValueLeft) < 0) {
+                                myChart.data.datasets[datasetIndex].data[index - 2] = startValueLeft2 + delta*(0.75);
+                                if (delta*(startValueLeft3-startValueLeft2) < 0) {
+                                    myChart.data.datasets[datasetIndex].data[index - 3] = startValueLeft3 + delta*(0.5);
+                                    if (delta*(startValueLeft4-startValueLeft3) < 0) {
+                                        myChart.data.datasets[datasetIndex].data[index - 4] = startValueLeft4 + delta*(0.25);
+                                        if (delta*(startValueLeft5-startValueLeft4) < 0) {
+                                            myChart.data.datasets[datasetIndex].data[index - 5] = startValueLeft5 + delta*(0.05);
+                                        }
+                                    }
+                                }   
+                            }
+                        }
+                        if (delta*(startValueRight-value) < 0) {
+                            myChart.data.datasets[datasetIndex].data[index + 1] = startValueRight + delta*(0.95);
+                            if (delta*(startValueRight2-startValueRight) < 0) {
+                                myChart.data.datasets[datasetIndex].data[index + 2] = startValueRight2 + delta*(0.75);
+                                if (delta*(startValueRight3-startValueRight2) < 0) {
+                                    myChart.data.datasets[datasetIndex].data[index + 3] = startValueRight3 + delta*(0.5);
+                                    if (delta*(startValueRight4-startValueRight3) < 0) {
+                                        myChart.data.datasets[datasetIndex].data[index + 4] = startValueRight4 + delta*(0.25);
+                                        if (delta*(startValueRight5-startValueRight4) < 0) {
+                                            myChart.data.datasets[datasetIndex].data[index + 5] = startValueRight5 + delta*(0.05);
+                                        }
+                                    }
                                 }
                             }
-                            if (delta*(startValueRight-value) < 0) {
-                                myChart.data.datasets[datasetIndex].data[index + 1] = startValueRight + delta*(3/4);
-                                if (delta*(startValueRight2-startValueRight) < 0) {
-                                    myChart.data.datasets[datasetIndex].data[index + 2] = startValueRight2 + delta*(3/8);
-                                }
-                            }
+                            //}
                         }
                         for (let iter = -2; iter <= 2; iter++){
                             if (myChart.data.datasets[datasetIndex].data[index+iter]>1) {
@@ -342,86 +589,86 @@
     function colorBoxes (data) {
         if ((data.srgb_50_2[0] + data.srgb_50_2[1] + data.srgb_50_2[2]) < 382) {
             document.getElementById('colorFieldD502').innerHTML = 
-            "<p id='colorD502' style='color:white'>srgb d50/2:" + 
+            "<p id='colorD502' style='color:white'>D50/2°" + /* 
                 "<br /> R:" + data.srgb_50_2[0] + 
                 "<br /> G:" + data.srgb_50_2[1] +
                 "<br /> B:" + data.srgb_50_2[2] + 
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
-                    background-color:rgb(`+ data.srgb_50_2[0] + `,` + data.srgb_50_2[1] +`,` + data.srgb_50_2[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_50_2[0] + `,` + data.srgb_50_2[1] +`,` + data.srgb_50_2[2] +`);"> ` +*/
             "</p>";
         } else {
             document.getElementById('colorFieldD502').innerHTML = 
-            "<p id='colorD502' style='color:black'>srgb d50/2:" + 
+            "<p id='colorD502' style='color:black'>D50/2°" + /* 
                 "<br /> R:" + data.srgb_50_2[0] + 
                 "<br /> G:" + data.srgb_50_2[1] +
                 "<br /> B:" + data.srgb_50_2[2] +
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb502Input' value="#f0f0f0" id="rgb502Field" onchange="rgbFunction(ill='d50', obs='2')" style="
-                    background-color:rgb(`+ data.srgb_50_2[0] + `,` + data.srgb_50_2[1] +`,` + data.srgb_50_2[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_50_2[0] + `,` + data.srgb_50_2[1] +`,` + data.srgb_50_2[2] +`);"> ` +*/
             "</p>";
         }
         if ((data.srgb_50_10[0] + data.srgb_50_10[1] + data.srgb_50_10[2]) < 382) {
             document.getElementById('colorFieldD5010').innerHTML = 
-            "<p id='colorD5010' style='color:white'>srgb d50/10:" + 
+            "<p id='colorD5010' style='color:white'>D50/10°" + /*
                 "<br /> R:" + data.srgb_50_10[0] + 
                 "<br /> G:" + data.srgb_50_10[1] +
                 "<br /> B:" + data.srgb_50_10[2] + 
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
-                    background-color:rgb(`+ data.srgb_50_10[0] + `,` + data.srgb_50_10[1] +`,` + data.srgb_50_10[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_50_10[0] + `,` + data.srgb_50_10[1] +`,` + data.srgb_50_10[2] +`);"> ` +*/
             "</p>";
         } else {
             document.getElementById('colorFieldD5010').innerHTML = 
-            "<p id='colorD5010' style='color:black'>srgb d50/10:" + 
+            "<p id='colorD5010' style='color:black'>D50/10°" + /*
                 "<br /> R:" + data.srgb_50_10[0] + 
                 "<br /> G:" + data.srgb_50_10[1] +
                 "<br /> B:" + data.srgb_50_10[2] +
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb5010Input' value="#f0f0f0" id="rgb5010Field" onchange="rgbFunction(ill='d50', obs='10')" style="
-                    background-color:rgb(`+ data.srgb_50_10[0] + `,` + data.srgb_50_10[1] +`,` + data.srgb_50_10[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_50_10[0] + `,` + data.srgb_50_10[1] +`,` + data.srgb_50_10[2] +`);"> ` + */
             "</p>";
         }
         if ((data.srgb_65_2[0] + data.srgb_65_2[1] + data.srgb_65_2[2]) < 382) {
             document.getElementById('colorFieldD652').innerHTML = 
-            "<p id='colorD652' style='color:white'>srgb d65/2:" + 
+            "<p id='colorD652' style='color:white'>srgb D65/2°:" + 
                 "<br /> R:" + data.srgb_65_2[0] + 
                 "<br /> G:" + data.srgb_65_2[1] +
                 "<br /> B:" + data.srgb_65_2[2] +
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
-                    background-color:rgb(`+ data.srgb_65_2[0] + `,` + data.srgb_65_2[1] +`,` + data.srgb_65_2[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_65_2[0] + `,` + data.srgb_65_2[1] +`,` + data.srgb_65_2[2] +`);"> ` + 
             "</p>";
         } else {
             document.getElementById('colorFieldD652').innerHTML = 
-            "<p id='colorD652' style='color:black'>srgb d65/2:" + 
+            "<p id='colorD652' style='color:black'>srgb D65/2°:" + 
                 "<br /> R:" + data.srgb_65_2[0] + 
                 "<br /> G:" + data.srgb_65_2[1] +
                 "<br /> B:" + data.srgb_65_2[2] +
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb652Input' value="#f0f0f0" id="rgb652Field" onchange="rgbFunction(ill='d65', obs='2')" style="
-                    background-color:rgb(`+ data.srgb_65_2[0] + `,` + data.srgb_65_2[1] +`,` + data.srgb_65_2[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_65_2[0] + `,` + data.srgb_65_2[1] +`,` + data.srgb_65_2[2] +`);"> ` + 
             "</p>";
         }
         if ((data.srgb_65_10[0] + data.srgb_65_10[1] + data.srgb_65_10[2]) < 382) {
             document.getElementById('colorFieldD6510').innerHTML = 
-            "<p id='colorD6510' style='color:white'>srgb d65/10:" + 
+            "<p id='colorD6510' style='color:white'>D65/10°" + /*
                 "<br /> R:" + data.srgb_65_10[0] + 
                 "<br /> G:" + data.srgb_65_10[1] +
                 "<br /> B:" + data.srgb_65_10[2] +
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
-                    background-color:rgb(`+ data.srgb_65_10[0] + `,` + data.srgb_65_10[1] +`,` + data.srgb_65_10[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_65_10[0] + `,` + data.srgb_65_10[1] +`,` + data.srgb_65_10[2] +`);"> ` + */
             "</p>";
         } else {
             document.getElementById('colorFieldD6510').innerHTML = 
-            "<p id='colorD6510' style='color:black'>srgb d65/10:" + 
+            "<p id='colorD6510' style='color:black'>D65/10°" + /*
                 "<br /> R:" + data.srgb_65_10[0] + 
                 "<br /> G:" + data.srgb_65_10[1] +
                 "<br /> B:" + data.srgb_65_10[2] +
                 `<br /> <br /> Choose Color:
                 <input type="color" name='rgb6510Input' value="#f0f0f0" id="rgb6510Field" onchange="rgbFunction(ill='d65', obs='10')" style="
-                    background-color:rgb(`+ data.srgb_65_10[0] + `,` + data.srgb_65_10[1] +`,` + data.srgb_65_10[2] +`);"> ` +
+                    background-color:rgb(`+ data.srgb_65_10[0] + `,` + data.srgb_65_10[1] +`,` + data.srgb_65_10[2] +`);"> ` + */
             "</p>";
         }
     }        

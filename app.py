@@ -91,27 +91,37 @@ def main_page():
     return render_template('simpleTemplate.html', srgb_50_2 = srgb_50_2, srgb_50_10 = srgb_50_10, 
                     srgb_65_2 = srgb_65_2, srgb_65_10 = srgb_65_10, 
                     labels = session.get('wavelength'), values = session.get('reflectance'),
-                    logo_path = "static/images/mein_logo.png")
-
-
+                    logo_path = "static/images/mein_logo_zugeschnitten.png", background_image_path = "static/images/spectrum.jpg",
+                    favicon_path = "static/images/favicon.png")
 
 def random_spec():
-    normalVerteilung = np.random.normal(0, 0.1, size = (49,))
-    dataPoints = np.random.uniform(0,1,1)
-    dataPoints = list(dataPoints)
-    for val in normalVerteilung:
-        nextPoint = dataPoints[-1] + val
+    sigma0 = 0.2    # alt nicht benötigt da uniform(0,1,1)
+    sigma1 = 0.08   # alt sigma1 = 0.1
+    sigma2 = 0.08   # alt sigma2 = 0.1
+    alpha = 0.7     # alt alpha = 0 oder halt unten komplett rausstreichen
+    s0 = np.random.normal(0.5, sigma0, 1).clip(0,1)
+    #s0 = np.random.uniform(0,1,1)
+    s1 = s0 + np.random.normal(0, sigma1, 1)
+    s1 = s1.clip(0,1)
+    normalVerteilung = np.random.normal(0, sigma2, 48)
+    dataPoints = list(s0)
+    dataPoints.append(s1[0])
+    for value in normalVerteilung:
+        nextPoint = dataPoints[-1] + alpha*(dataPoints[-1]-dataPoints[-2]) + value
         if nextPoint < 0:
             dataPoints.append(0)
         elif nextPoint > 1:
             dataPoints.append(1)
         else:
-            dataPoints.append(dataPoints[-1] + val)
+            dataPoints.append(nextPoint)
     return np.array(dataPoints)
 
 def ref2spec(ref, obs, ill):
     xyz = spectralTrafo.spec2xyz(ref, obs=obs, ill=ill)
+    #srgb = spectralTrafo.xyz2srgb(xyz, ill=ill)
+    #srgb = np.clip(srgb*255, 0, 255)
     rgb = spectralTrafo.xyz2rgb(xyz)
     srgb = np.clip(spectralTrafo.gamma_correction(rgb)*255, 0, 255)
     srgb = list(np.rint(srgb))
+    #print(xyz, rgb, srgb)
     return srgb
